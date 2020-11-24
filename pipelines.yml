@@ -1,13 +1,13 @@
 resources:
-  - name: myAppRepo
+  - name: cicd-sample
     type: GitRepo
     configuration:
       gitProvider: myGitHub               # Change to your integration
-      path: /Users/rojarm/Documents/GitHub/cicd-sample/src/main/java/com/coveros/demo/helloworld                # Change to your repo
+      path: roja03/cicd-sample             # Change to your repo
       branches:
       inculde: master
   pipelines:
-  - name: pipeline_hello_world
+  - name: pipeline
     configuration:
       environmentVariables:
         readOnly:
@@ -17,7 +17,7 @@ resources:
         type: Bash
         configuration:
           inputResources:
-            - name: myAppRepo
+            - name: cicd-sample
         execution:
           onExecute:
             - echo $MY_MESSAGE
@@ -25,9 +25,9 @@ resources:
             - add_run_variables current_runid=$run_id
             - echo Previous run ID is $prev_runid
             - echo Current run ID is $current_runid
-            - echo $res_myAppRepo_resourcePath
-            - echo $res_myAppRepo_gitProvider_name
-            - echo $res_myAppRepo_commitSha
+            - echo $res_cicd-sample_resourcePath
+            - echo $res_cicd-sample_gitProvider_name
+            - echo $res_cicd-sample_commitSha
  
       - name: step_2
         type: Bash
