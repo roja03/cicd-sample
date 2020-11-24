@@ -4,7 +4,7 @@ resources:
     type: GitRepo
     configuration:
       path: roja03/cicd-sample                # Change to your repo  
-      gitProvider: roja03             # Change to your integration  
+      gitProvider: sampleCICD             # Change to your integration  
 pipelines:
   - name: pipeline_hello_world
     configuration:
