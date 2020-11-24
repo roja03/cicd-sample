@@ -1,63 +1,80 @@
 resources:
-  - name: cicd-sample
+  - name: myGitRepo
     type: GitRepo
     configuration:
-      gitProvider: myGitHub               # Change to your integration
-      path: roja03/cicd-sample             # Change to your repo
+      gitProvider: my_github
+      path: roja03/cicd-sample
       branches:
-      inculde: master
-  pipelines:
-  - name: pipeline
+        include: master
+  - name: myBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: art
+      buildName: SampleApp
+      buildNumber: 1          
+pipelines:  
+  - name: basic_pipeline
     configuration:
       environmentVariables:
         readOnly:
-          MY_MESSAGE: '"Hello World!"'
+          my_env_var: "hello"  
     steps:
       - name: step_1
         type: Bash
         configuration:
           inputResources:
-            - name: cicd-sample
+            - name: myGitRepo
+          outputResources:
+            - name: myBuildInfo             
         execution:
           onExecute:
-            - echo $MY_MESSAGE
-            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
-            - add_run_variables current_runid=$run_id
-            - echo Previous run ID is $prev_runid
-            - echo Current run ID is $current_runid
-            - echo $res_cicd-sample_resourcePath
-            - echo $res_cicd-sample_gitProvider_name
-            - echo $res_cicd-sample_commitSha
- 
+            - echo $my_env_var
+            - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
+            - write_output myBuildInfo "buildNumber=$app_version"
+            - add_run_variables run_var="hello"
       - name: step_2
         type: Bash
         configuration:
-          inputSteps:
-            - name: step_1
+          inputResources:
+            - name: myBuildInfo            
+          runtime:
+            type: image
+            image:
+              auto:
+                language: java
+                versions: ['11']
         execution:
           onExecute:
-            - echo $MY_MESSAGE
-            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
- 
+            - echo $run_var  
+            - echo $res_myBuildInfo_buildNumber
+
       - name: step_3
         type: Bash
         configuration:
+          environmentVariables:
+            step_env_var1: "hello"
           inputSteps:
-            - name: step_1
+            - name: step_2
         execution:
           onExecute:
-            - echo $MY_MESSAGE
-            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
- 
+            - echo $step_env_var1
+
       - name: step_4
         type: Bash
         configuration:
           inputSteps:
             - name: step_2
-            - name: step_3
         execution:
           onExecute:
-            - echo $MY_MESSAGE
-            - echo "Running $pipeline_name | $step_name on node ID $step_node_id"
-            - add_pipeline_variables prev_runid=$run_id           
-            - echo $current_runid Completed
+            - echo $app_version
+      - name: step_5
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: step_3
+            - name: step_4  
+          integrations:
+            - name: my_github            
+        execution:
+          onExecute:
+            - 'curl -H "Authorization: token ${int_my_github_token}" ${int_my_github_url}/rate_limit'
