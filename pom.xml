@@ -262,8 +262,8 @@
                                         <contextUrl>${ARTIFACTORY_URL}</contextUrl>
                                         <username>${ARTIFACTORY_USERNAME}</username>
                                         <password>${ARTIFACTORY_PASSWORD}</password>
-                                        <repoKey>oss-release-local</repoKey>
-                                        <snapshotRepoKey>oss-snapshot-local</snapshotRepoKey>
+                                        <repoKey>libs-release-local</repoKey>
+                                        <snapshotRepoKey>libs-snapshot-local</snapshotRepoKey>
                                     </publisher>
                                 </configuration>
                             </execution>
