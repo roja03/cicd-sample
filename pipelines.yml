@@ -2,16 +2,10 @@ resources:
   - name: myGitRepo
     type: GitRepo
     configuration:
-      gitProvider: my_github
+      gitProvider: myGitHub
       path: roja03/cicd-sample
       branches:
-        include: master
-  - name: myBuildInfo
-    type: BuildInfo
-    configuration:
-      sourceArtifactory: art
-      buildName: SampleApp
-      buildNumber: 1          
+        include: master        
 pipelines:  
   - name: basic_pipeline
     configuration:
