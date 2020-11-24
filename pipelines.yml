@@ -3,8 +3,8 @@ resources:
   - name: myAppRepo
     type: GitRepo
     configuration:
-      gitProvider: mygithub              # Change to your integration
-      path: roja03/cicd-sample                # Change to your repo     
+      path: roja03/cicd-sample                # Change to your repo  
+      gitProvider: roja03             # Change to your integration  
 pipelines:
   - name: pipeline_hello_world
     configuration:
