@@ -17,7 +17,7 @@ pipelines:
           configFileLocation: .
           configFileName: settings.xml
           inputResources:
-            - name: myGitRepo
+            - name: myAppRepo
           integrations:
             - name: sampleCICD
           runtime:
