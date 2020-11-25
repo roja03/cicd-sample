@@ -50,34 +50,34 @@ pipelines:
             - echo $run_var
             - echo $res_myBuildInfo_buildNumber
 
+    - name: step_3
+      type: Bash
+      configuration:
+        environmentVariables:
+          step_env_var1: "Hello World!"
+        inputSteps:
+          - name: step_2
+      execution:
+        onExecute:
+          - echo $step_env_var1
+
+    - name: step_4
+      type: Bash
+      configuration:
+        inputSteps:
+          - name: step_2
+      execution:
+        onExecute:
+          - echo $app_version
+
+    - name: step_5
+      type: Bash
+      configuration:
+        inputSteps:
           - name: step_3
-              type: Bash
-              configuration:
-                environmentVariables:
-                  step_env_var1: "Hello World!"
-                inputSteps:
-                  - name: step_2
-              execution:
-                onExecute:
-                  - echo $step_env_var1
-
           - name: step_4
-              type: Bash
-              configuration:
-                inputSteps:
-                  - name: step_2
-              execution:
-                onExecute:
-                  - echo $app_version
-
-            - name: step_5
-                type: Bash
-                configuration:
-                  inputSteps:
-                    - name: step_3
-                    - name: step_4
-                  integrations:
-                    - name: sampleCICD            # <- Change to your integration name
-                execution:
-                  onExecute:
-                    - 'curl -H "Authorization: token ${int_sampleCICD_token}" ${int_sampleCICD_url}/rate_limit'   # <- Change to your integration name
+        integrations:
+          - name: sampleCICD            # <- Change to your integration name
+      execution:
+        onExecute:
+          - 'curl -H "Authorization: token ${int_sampleCICD_token}" ${int_sampleCICD_url}/rate_limit'   # <- Change to your integration name
