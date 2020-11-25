@@ -39,12 +39,12 @@ pipelines:
       configuration:
         inputResources:
           - name: myBuildInfo
-          runtime:
-            type: image
-            image:
-              auto:
-                language: java
-                versions: [ '11' ]
+        runtime:
+          type: image
+          image:
+            auto:
+              language: java
+              versions: [ '11' ]
         execution:
           onExecute:
             - echo $run_var
