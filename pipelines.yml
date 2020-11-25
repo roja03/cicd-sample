@@ -13,7 +13,6 @@ pipelines:
         type: MvnBuild
         configuration:
           mvnCommand: clean install -ntp
-          configFileLocation: .
           inputResources:
             - name: myGitRepo
           integrations:
