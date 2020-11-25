@@ -12,7 +12,10 @@ pipelines:
       - name: bld_backend
         type: MvnBuild
         configuration:
+          sourceLocation: cicd-sample
           mvnCommand: clean install -ntp
+          configFileLocation: .
+          configFileName: settings.xml
           inputResources:
             - name: myGitRepo
           integrations:
