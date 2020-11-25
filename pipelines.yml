@@ -13,7 +13,7 @@ pipelines:
       environmentVariables:
         readOnly:
           MY_MESSAGE: "Hello World!"
-  steps:
+    steps:
     - name: myBuildInfo
       type: BuildInfo
       configuration:
