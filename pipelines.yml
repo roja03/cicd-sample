@@ -6,12 +6,7 @@ resources:
       path: roja03/cicd-sample                # Change to your repo
       branches:
         include: master
-  - name: myBuildInfo
-      type: BuildInfo
-      configuration:
-        sourceArtifactory: sampleCICD                       # <- Change to your integration name
-        buildName: SampleApp
-        buildNumber: 1
+
 pipelines:
   - name: pipeline_hello_world
     configuration:
@@ -19,6 +14,12 @@ pipelines:
         readOnly:
           MY_MESSAGE: "Hello World!"
   steps:
+    - name: myBuildInfo
+      type: BuildInfo
+      configuration:
+        sourceArtifactory: sampleCICD                       # <- Change to your integration name
+        buildName: SampleApp
+        buildNumber: 1
     - name: step_1
       type: Bash
       configuration:
