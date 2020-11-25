@@ -1,32 +1,80 @@
 resources:
-  - name: myAppRepo
+  - name: myGitRepo
     type: GitRepo
     configuration:
-      path: roja03/cicd-sample
       gitProvider: sampleCICD
+      path: roja03/cicd-sample
       branches:
         include: master
+  - name: myBuildInfo
+    type: BuildInfo
+    configuration:
+      sourceArtifactory: Artifactory
+      buildName: SampleApp
+      buildNumber: 1
 pipelines:
-  - name: pipeline_hello_world
+  - name: basic_pipeline
+    configuration:
+      environmentVariables:
+        readOnly:
+          my_env_var: "hello"
     steps:
-      - name: bld_backend
-        type: MvnBuild
+      - name: step_1
+        type: Bash
         configuration:
-          sourceLocation: cicd-sample
-          mvnCommand: clean install -ntp
-          configFileLocation: .
-          configFileName: settings.xml
           inputResources:
-            - name: myAppRepo
-          integrations:
-            - name: Artifactory
+            - name: myGitRepo
+          outputResources:
+            - name: myBuildInfo
+        execution:
+          onExecute:
+            - echo $my_env_var
+            - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
+            - write_output myBuildInfo "buildNumber=$app_version"
+            - add_run_variables run_var="hello"
+      - name: step_2
+        type: Bash
+        configuration:
+          inputResources:
+            - name: myBuildInfo
           runtime:
             type: image
             image:
               auto:
                 language: java
-                versions:
-                  - "11"
+                versions: ['11']
         execution:
-          onStart:
-            - javac -version # java version
+          onExecute:
+            - echo $run_var
+            - echo $res_myBuildInfo_buildNumber
+
+      - name: step_3
+        type: Bash
+        configuration:
+          environmentVariables:
+            step_env_var1: "hello"
+          inputSteps:
+            - name: step_2
+        execution:
+          onExecute:
+            - echo $step_env_var1
+
+      - name: step_4
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: step_2
+        execution:
+          onExecute:
+            - echo $app_version
+      - name: step_5
+        type: Bash
+        configuration:
+          inputSteps:
+            - name: step_3
+            - name: step_4
+          integrations:
+            - name: my_github
+        execution:
+          onExecute:
+            - 'curl -H "Authorization: token ${int_sampleCICD_token}" ${int_my_sampleCICD_url}/rate_limit'
