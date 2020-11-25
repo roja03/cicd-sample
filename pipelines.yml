@@ -29,4 +29,4 @@ pipelines:
                   - "11"
         execution:
           onStart:
-            - javac -version
+            - javac -version # java version
