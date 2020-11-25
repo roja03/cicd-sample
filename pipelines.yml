@@ -35,10 +35,10 @@ pipelines:
           - add_run_variables run_var="Hello World!"
 
     - name: step_2
-        type: Bash
-        configuration:
-          inputResources:
-            - name: myBuildInfo
+      type: Bash
+      configuration:
+        inputResources:
+          - name: myBuildInfo
           runtime:
             type: image
             image:
