@@ -1,19 +1,19 @@
 resources:
-  - name: myGitRepos
+  - name: myGitRepoo
     type: GitRepo
     configuration:
       gitProvider: sampleCICD
       path: roja03/cicd-sample
       branches:
         include: master
-  - name: myBuildInfos
+  - name: myBuildInfoo
     type: BuildInfo
     configuration:
-      sourceArtifactory: Artifactory
+      sourceArtifactory: art
       buildName: SampleApp
       buildNumber: 1
 pipelines:
-  - name: basic_pipeline
+  - name: basic_pipeline_sample
     configuration:
       environmentVariables:
         readOnly:
@@ -23,20 +23,20 @@ pipelines:
         type: Bash
         configuration:
           inputResources:
-            - name: myGitRepos
+            - name: myGitRepoo
           outputResources:
-            - name: myBuildInfos
+            - name: myBuildInfoo
         execution:
           onExecute:
             - echo $my_env_var
             - if [ -z $app_version ]; then add_pipeline_variables app_version=1.0.0; else app_version=$(bump_semver $app_version minor); fi
-            - write_output myBuildInfos "buildNumber=$app_version"
+            - write_output myBuildInfoo "buildNumber=$app_version"
             - add_run_variables run_var="hello"
       - name: step_2
         type: Bash
         configuration:
           inputResources:
-            - name: myBuildInfos
+            - name: myBuildInfoo
           runtime:
             type: image
             image:
@@ -46,7 +46,7 @@ pipelines:
         execution:
           onExecute:
             - echo $run_var
-            - echo $res_myBuildInfos_buildNumber
+            - echo $res_myBuildInfoo_buildNumber
 
       - name: step_3
         type: Bash
@@ -77,4 +77,4 @@ pipelines:
             - name: sampleCICD
         execution:
           onExecute:
-            - 'curl -H "Authorization: token ${int_sampleCICD_token}" ${int_my_sampleCICD_url}/rate_limit'
+            - 'curl -H "Authorization: token ${int_sampleCICD_token}" ${int_sampleCICD_url}/rate_limit' #int
