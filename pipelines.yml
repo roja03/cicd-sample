@@ -19,7 +19,7 @@ pipelines:
           inputResources:
             - name: myGitRepo
           integrations:
-            - name: Artifactory
+            - name: sampleCICD
           runtime:
             type: image
             image:
