@@ -9,7 +9,7 @@ resources:
   - name: myBuildInfoo
     type: BuildInfo
     configuration:
-      sourceArtifactory: art
+      sourceArtifactory: sampleCICD
       buildName: SampleApp
       buildNumber: 1
 pipelines:
