@@ -15,8 +15,9 @@ steps:
   inputs:
     artifactoryConnection: 'roja'
     cliInstallationRepo: 'jfrog-cli-v2-new'
-    installCustomVersion: true
-    cliVersion: '2.35.0'
+    installExtractors: true
+    extractorsInstallationRepo: 'jfrog-cli-v2-new'
+
 - task: JFrogMaven@1
   inputs:
     mavenPomFile: 'pom.xml'
